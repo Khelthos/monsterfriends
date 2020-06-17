@@ -1,19 +1,19 @@
 import React from "react";
 import Card from "./Card";
 
-const ListCard = ({ robots }) => {
+const ListCard = ({ monsters }) => {
   // if (true) {
   //   throw new Error('');
   // }
   return (
     <div>
-      {robots.map((user, i) => {
+      {monsters.map((user, i) => {
         return (
           <Card
             key={i}
-            id={robots[i].id}
-            name={robots[i].name}
-            email={robots[i].email}
+            id={monsters[i].id}
+            name={monsters[i].name}
+            email={monsters[i].email}
           />
         );
       })}
