@@ -1,2 +1,2 @@
 # monsterfriends
-Just a React example app
+Just a React example app 
