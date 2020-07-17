@@ -1,45 +1,39 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import ListCard from "../components/ListCard";
 import SearchBox from "../components/SearchBox";
 import Scroll from "../components/Scroll";
 import ErrorBoundry from "../components/ErrorBoundry";
 import "./App.css";
-import { setSearchField } from "../actions";
+import { setSearchField, requestMonsters } from "../actions";
 
 const mapStateToProps = (state) => {
   return {
-    searchField: state.searchField,
+    searchField: state.searchMonsters.searchField,
+    monsters: state.requestMonsters.monsters,
+    isPending: state.requestMonsters.isPending,
+    error: state.requestMonsters.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+    onRequestMonsters: () => dispatch(requestMonsters()),
   };
 };
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      monsters: [],
-    };
-  }
-
+class App extends Component {
   componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((users) => this.setState({ monsters: users }));
+    this.props.onRequestMonsters();
   }
 
   render() {
-    const { monsters } = this.state;
-    const { searchField, onSearchChange } = this.props;
-    const filteredmonsters = monsters.filter((robot) => {
-      return robot.name.toLowerCase().includes(searchField.toLowerCase());
+    const { searchField, onSearchChange, monsters, isPending } = this.props;
+    const filteredmonsters = monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(searchField.toLowerCase());
     });
-    return !monsters.length ? (
+    return isPending ? (
       <h1 className="tc pt5">Loading...</h1>
     ) : (
       <div className="tc">
